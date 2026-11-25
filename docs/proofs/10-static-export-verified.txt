@@ -1,0 +1,80 @@
+VALIDÉ : frontend/out/index.html et assets statiques présents ; aucune route API dans l’export.
+VALIDÉ : export servi par HTTP (200), sans serveur Next.js.
+
+> aeris-weather-app@1.0.0 test:e2e
+> npm --prefix frontend run test:e2e
+
+
+> aeris-frontend@0.1.0 test:e2e
+> playwright test
+
+
+Running 8 tests using 1 worker
+
+(node:11342) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/weather.spec.ts:14:1 › météo, prévisions, recherche et carte sans dépendance réseau (2.9s)
+  ✓  2 tests/e2e/weather.spec.ts:31:1 › timeout fournisseur affiché, puis nouvelle tentative réussie (315ms)
+  ✓  3 tests/e2e/weather.spec.ts:41:1 › ville inconnue et champ vide (212ms)
+  ✓  4 tests/e2e/weather.spec.ts:49:1 › une réponse ancienne ne remplace pas une nouvelle recherche (1.2s)
+  ✓  5 tests/e2e/weather.spec.ts:63:1 › menu mobile et absence de débordement de 320 à 1440 px (311ms)
+  ✓  6 tests/e2e/weather.spec.ts:77:1 › historique cliquable sans supprimer les fonctionnalités météo (268ms)
+  ✓  7 tests/e2e/weather.spec.ts:87:1 › panne de base signalée sans masquer la météo (179ms)
+  ✓  8 tests/e2e/weather.spec.ts:95:1 › proxy inaccessible : message compréhensible même pour une réponse HTML (157ms)
+
+  8 passed (6.6s)
+
+> aeris-weather-app@1.0.0 test:live
+> npm --prefix frontend run test:live
+
+
+> aeris-frontend@0.1.0 test:live
+> AERIS_LIVE=1 playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:11415) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/live.spec.ts:3:1 › real weather, search, map and errors on desktop (25.3s)
+(node:11471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/e2e/live.spec.ts:65:1 › mobile navigation, responsive layout and successive searches (1.4s)
+
+
+  1) tests/e2e/live.spec.ts:3:1 › real weather, search, map and errors on desktop ──────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Marseille', exact: true })
+    Expected: visible
+    Timeout: 25000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Marseille', exact: true }) with timeout 25000ms
+      - waiting for getByRole('heading', { name: 'Marseille', exact: true })
+
+
+       8 |   await expect(
+       9 |     page.getByRole("heading", { name: "Marseille", exact: true }),
+    > 10 |   ).toBeVisible({ timeout: 25000 });
+         |     ^
+      11 |   await expect(page.locator(".forecast-card")).toHaveCount(5);
+      12 |   await expect(page.locator(".leaflet-tile-loaded").first()).toBeVisible({
+      13 |     timeout: 20000,
+        at /Users/macm5lorenzo/Desktop/aeris/frontend/tests/e2e/live.spec.ts:10:5
+
+    Error Context: test-results/live-real-weather-search-map-and-errors-on-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/live-real-weather-search-map-and-errors-on-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/live-real-weather-search-map-and-errors-on-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/live.spec.ts:3:1 › real weather, search, map and errors on desktop ───────────────────
+  1 passed (27.9s)

@@ -1,0 +1,39 @@
+AERIS — 25 novembre 2026
+Transcription synthétique des sorties réellement observées, sans secrets.
+Les sorties historiques 01 à 10 décrivent la session du 23 novembre.
+
+npm run typecheck : code 0.
+npm run lint : échec initial (29 erreurs sur cache frontend/frontend/.next), puis code 0 après exclusions récursives.
+npm test : tests 15, pass 15, fail 0.
+docker compose config --quiet : code 0.
+docker compose up --build -d --wait : aeris-backend:local Built, aeris-frontend:local Built ; db, backend, frontend Healthy.
+Build frontend : Next.js 16.4.6 ; routes /, /_not-found, /icon.svg statiques ; export copié depuis /app/out dans Nginx.
+Certaines couches de build étaient en cache ; aucun --no-cache revendiqué.
+
+AERIS_URL=http://localhost:8080 npm run test:stack :
+GET /api/health 200 {"status":"ok","service":"aeris-api"}
+GET /api/health/db 200 {"status":"ok","database":"postgresql","result":1}
+Marseille : historySaved=true ; ligne relue dans l’historique.
+
+test:api : Marseille, Paris, Londres, Tokyo, New York : 200, cinq jours.
+Ville inconnue : 404. Chaîne vide et x : 400.
+test:e2e : 8 passed (12.0s), fournisseur simulé.
+test:live : 2 passed (7.2s), météo et tuiles réelles, historySaved=true.
+
+docker compose restart ; docker compose up -d --wait : trois services Healthy.
+check-persistence.mjs :
+{"persisted":{"id":"13","city":"Marseille","country":"France","searchedAt":"2026-11-25T09:25:40.292Z"}}
+SELECT SQL indépendant : 13 Marseille France ; 12 Londres Royaume-Uni ; 11 Paris France.
+nginx -t : syntax is ok ; test is successful.
+Contrôles index.html présent, /app/node_modules et html/node_modules absents, commande node absente : code 0.
+
+Conteneur TP1 indépendant sur 8081 : premier curl trop précoce code 52.
+Après démarrage : /healthz -> ok ; HEAD / -> HTTP/1.1 200 OK, Server: nginx, Content-Length: 22541.
+Conteneur temporaire arrêté ensuite.
+
+Après docker compose stop db :
+health/db : 503 ; searches : 503 ; weather : 200, historySaved=false.
+Après docker compose start db et up -d --wait : trois services Healthy.
+
+Audit public avant commit : 17 blobs de HEAD contrôlés, aucun artefact interdit ou signature sensible détecté.
+Ce contrôle de motifs ne constitue pas une garantie universelle de détection de secrets.

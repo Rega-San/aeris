@@ -1,0 +1,22 @@
+ M .gitignore
+ M README.md
+ M package-lock.json
+ M package.json
+ M src/app/globals.css
+ M src/app/layout.tsx
+ M src/app/page.tsx
+?? .local/
+?? docs/
+?? playwright.config.ts
+?? scripts/
+?? src/app/api/
+?? src/app/icon.svg
+?? src/components/
+?? src/lib/
+?? src/types/
+?? tests/
+Docker Compose version v5.5.1
+
+failed to connect to the docker API at unix:///Users/macm5lorenzo/.docker/run/docker.sock; check if the path is correct and if the daemon is running: dial unix /Users/macm5lorenzo/.docker/run/docker.sock: connect: no such file or directory
+arm64
+PostgreSQL 15.17 (Homebrew)

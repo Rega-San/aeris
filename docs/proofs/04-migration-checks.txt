@@ -1,0 +1,94 @@
+
+> aeris-weather-app@1.0.0 typecheck
+> npm --prefix backend run typecheck && npm --prefix frontend run typecheck
+
+
+> aeris-backend@1.0.0 typecheck
+> tsc --noEmit && tsc -p tsconfig.tests.json
+
+
+> aeris-frontend@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> aeris-weather-app@1.0.0 lint
+> npm --prefix frontend run lint
+
+
+> aeris-frontend@0.1.0 lint
+> eslint
+
+
+> aeris-weather-app@1.0.0 test
+> npm --prefix backend test
+
+
+> aeris-backend@1.0.0 test
+> node --import tsx --test tests/*.test.ts tests/*.test.mjs
+
+✔ health API et véritable contrat de réponse DB (33.752042ms)
+✔ entrées invalides refusées avant tout appel fournisseur (6.8705ms)
+✔ chaque météo réussie est enregistrée avant la réponse ; pas de cache HTTP (3.109ms)
+✔ 404, 502 et 504 fournisseur conservés sans enregistrement (3.510208ms)
+✔ panne DB : health et historique 503, météo préservée avec avertissement (1.823333ms)
+✔ historique structuré et erreur inattendue sans détails internes (1.791375ms)
+✔ SQL paramétré et liste limitée à 10 lignes (0.130625ms)
+✔ cache fournisseur expirant après 5 minutes (0.086916ms)
+✔ validation accepts international city names and rejects invalid inputs (1.4445ms)
+✔ normalizes measurements and excludes today from the five-day forecast (15.592375ms)
+✔ unknown city produces a 404 (0.198042ms)
+✔ upstream HTTP errors produce a 502 (0.101ms)
+✔ upstream timeouts produce a 504 (0.187041ms)
+✔ missing measurements are rejected instead of becoming false zero values (0.365042ms)
+✔ incomplete daily data is rejected (0.264291ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 437.51475
+
+> aeris-weather-app@1.0.0 build
+> npm --prefix backend run build && npm --prefix frontend run build
+
+
+> aeris-backend@1.0.0 build
+> tsc
+
+
+> aeris-frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.4.6 (Turbopack)
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/macm5lorenzo/Desktop/aeris/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles:
+   * /Users/macm5lorenzo/Desktop/aeris/frontend/package-lock.json
+
+✓ Running next.config.ts took 12ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1364ms
+  Running TypeScript ...
+  Finished TypeScript in 991ms ...
+  Collecting page data using 6 workers ...
+  Generating static pages using 6 workers (0/5) ...
+  Generating static pages using 6 workers (1/5)
+  Generating static pages using 6 workers (2/5)
+  Generating static pages using 6 workers (3/5)
+✓ Generating static pages using 6 workers (5/5) in 207ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ○ /icon.svg
+
+
+○  (Static)  prerendered as static content

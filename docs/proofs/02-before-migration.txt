@@ -1,0 +1,54 @@
+
+> aeris@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> aeris@0.1.0 lint
+> eslint
+
+
+> aeris@0.1.0 test
+> node --test tests/weather.test.mjs
+
+✔ validation accepts international city names and rejects invalid inputs (1.507583ms)
+✔ normalizes measurements and excludes today from the five-day forecast (15.499625ms)
+✔ unknown city produces a 404 (0.19675ms)
+✔ upstream HTTP errors produce a 502 (0.127542ms)
+✔ upstream timeouts produce a 504 (0.199125ms)
+✔ missing measurements are rejected instead of becoming false zero values (0.387625ms)
+✔ incomplete daily data is rejected (0.253ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 206.108833
+
+> aeris@0.1.0 test:api
+> node scripts/check-api.mjs
+
+{"city":"Marseille","status":200,"location":"Marseille","days":5}
+{"city":"Paris","status":200,"location":"Paris","days":5}
+{"city":"Londres","status":200,"location":"Londres","days":5}
+{"city":"Tokyo","status":200,"location":"Tokyo","days":5}
+{"city":"New York","status":200,"location":"New York","days":5}
+{"city":"zzzxqvnotacityxx","status":404,"error":"Ville introuvable. Vérifiez l’orthographe ou essayez une ville voisine."}
+{"city":"","status":400,"error":"Saisissez un nom de ville entre 2 et 100 caractères."}
+{"city":"x","status":400,"error":"Saisissez un nom de ville entre 2 et 100 caractères."}
+
+> aeris@0.1.0 test:e2e
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:10049) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/weather.spec.ts:3:1 › real weather, search, map and errors on desktop (3.7s)
+  ✓  2 tests/e2e/weather.spec.ts:65:1 › mobile navigation, responsive layout and successive searches (1.8s)
+
+  2 passed (6.5s)

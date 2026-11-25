@@ -1,0 +1,29 @@
+{
+  "name": "aeris-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=../.env --import tsx --watch src/server.ts",
+    "build": "tsc",
+    "start": "node --env-file-if-exists=../.env dist/server.js",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.tests.json",
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.16.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/pg": "^8.15.0",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22",
+    "typescript": "^5.9.3",
+    "tsx": "^4.20.0"
+  }
+}

@@ -1,0 +1,92 @@
+
+> aeris-weather-app@1.0.0 test:api
+> node scripts/check-api.mjs
+
+{"city":"Marseille","status":200,"location":"Marseille","days":5}
+{"city":"Paris","status":200,"location":"Paris","days":5}
+{"city":"Londres","status":200,"location":"Londres","days":5}
+{"city":"Tokyo","status":200,"location":"Tokyo","days":5}
+{"city":"New York","status":200,"location":"New York","days":5}
+{"city":"zzzxqvnotacityxx","status":404,"error":"Ville introuvable. Vérifiez l’orthographe ou essayez une ville voisine."}
+{"city":"","status":400,"error":"Saisissez un nom de ville entre 2 et 100 caractères."}
+{"city":"x","status":400,"error":"Saisissez un nom de ville entre 2 et 100 caractères."}
+
+> aeris-weather-app@1.0.0 test:stack
+> node scripts/check-stack.mjs
+
+{"endpoint":"/api/health","status":200,"data":{"status":"ok","service":"aeris-api"}}
+{"endpoint":"/api/health/db","status":200,"data":{"status":"ok","database":"postgresql","result":1}}
+{"weather":"Marseille","historySaved":true,"historyRow":{"id":"8","city":"Marseille","country":"France","searchedAt":"2026-11-23T08:45:04.285Z"}}
+VALIDÉ : API -> Open-Meteo ; API -> PostgreSQL ; lecture de la recherche enregistrée.
+
+> aeris-weather-app@1.0.0 test:e2e
+> npm --prefix frontend run test:e2e
+
+
+> aeris-frontend@0.1.0 test:e2e
+> playwright test
+
+
+Running 8 tests using 1 worker
+
+(node:10854) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/weather.spec.ts:14:1 › météo, prévisions, recherche et carte sans dépendance réseau (2.6s)
+  ✓  2 tests/e2e/weather.spec.ts:31:1 › timeout fournisseur affiché, puis nouvelle tentative réussie (448ms)
+  ✓  3 tests/e2e/weather.spec.ts:41:1 › ville inconnue et champ vide (370ms)
+  ✓  4 tests/e2e/weather.spec.ts:49:1 › une réponse ancienne ne remplace pas une nouvelle recherche (1.4s)
+  ✓  5 tests/e2e/weather.spec.ts:63:1 › menu mobile et absence de débordement de 320 à 1440 px (456ms)
+  ✓  6 tests/e2e/weather.spec.ts:77:1 › historique cliquable sans supprimer les fonctionnalités météo (416ms)
+  ✓  7 tests/e2e/weather.spec.ts:87:1 › panne de base signalée sans masquer la météo (316ms)
+  ✓  8 tests/e2e/weather.spec.ts:95:1 › proxy inaccessible : message compréhensible même pour une réponse HTML (296ms)
+
+  8 passed (7.5s)
+
+> aeris-weather-app@1.0.0 test:live
+> npm --prefix frontend run test:live
+
+
+> aeris-frontend@0.1.0 test:live
+> AERIS_LIVE=1 playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:10939) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/live.spec.ts:3:1 › real weather, search, map and errors on desktop (3.3s)
+  ✘  2 tests/e2e/live.spec.ts:65:1 › mobile navigation, responsive layout and successive searches (1.4s)
+
+
+  1) tests/e2e/live.spec.ts:65:1 › mobile navigation, responsive layout and successive searches ────
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Paris' }) resolved to 2 elements:
+        1) <button>…</button> aka getByRole('button', { name: 'Paris', exact: true })
+        2) <button type="button" title="Paris, France">…</button> aka getByRole('button', { name: 'Paris France' })
+
+    Call log:
+      - waiting for getByRole('button', { name: 'Paris' })
+
+
+       99 |     fullPage: true,
+      100 |   });
+    > 101 |   await page.getByRole("button", { name: "Paris", exact: false }).click();
+          |                                                                   ^
+      102 |   await page.getByRole("button", { name: "Londres", exact: false }).click();
+      103 |   await expect(
+      104 |     page.getByRole("heading", { name: "Londres", exact: true }),
+        at /Users/macm5lorenzo/Desktop/aeris/frontend/tests/e2e/live.spec.ts:101:67
+
+    Error Context: test-results/live-mobile-navigation-res-d0dda-out-and-successive-searches/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/live-mobile-navigation-res-d0dda-out-and-successive-searches/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/live-mobile-navigation-res-d0dda-out-and-successive-searches/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/live.spec.ts:65:1 › mobile navigation, responsive layout and successive searches ─────
+  1 passed (5.9s)

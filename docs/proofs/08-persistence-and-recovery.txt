@@ -1,0 +1,34 @@
+
+> aeris-weather-app@1.0.0 test:stack
+> node scripts/check-stack.mjs
+
+{"endpoint":"/api/health","status":200,"data":{"status":"ok","service":"aeris-api"}}
+{"endpoint":"/api/health/db","status":200,"data":{"status":"ok","database":"postgresql","result":1}}
+{"weather":"Marseille","historySaved":true,"historyRow":{"id":"16","city":"Marseille","country":"France","searchedAt":"2026-11-23T08:46:50.924Z"}}
+VALIDÉ : API -> Open-Meteo ; API -> PostgreSQL ; lecture de la recherche enregistrée.
+waiting for server to shut down.... done
+server stopped
+{"endpoint":"health/db","status":503,"body":{"error":"Base de données temporairement indisponible."}}
+{"endpoint":"searches","status":503,"body":{"error":"L’historique est temporairement indisponible."}}
+{"endpoint":"weather","status":200,"historySaved":false}
+waiting for server to start.... done
+server started
+{"persisted":{"id":"16","city":"Marseille","country":"France","searchedAt":"2026-11-23T08:46:50.924Z"}}
+VALIDÉ : la même ligne existe après le redémarrage effectué séparément.
+
+> aeris-weather-app@1.0.0 test:live
+> npm --prefix frontend run test:live
+
+
+> aeris-frontend@0.1.0 test:live
+> AERIS_LIVE=1 playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:11073) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/live.spec.ts:3:1 › real weather, search, map and errors on desktop (3.6s)
+  ✓  2 tests/e2e/live.spec.ts:65:1 › mobile navigation, responsive layout and successive searches (1.5s)
+
+  2 passed (6.2s)

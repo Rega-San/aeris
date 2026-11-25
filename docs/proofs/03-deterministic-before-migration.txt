@@ -1,0 +1,16 @@
+
+> aeris@0.1.0 test:e2e
+> playwright test
+
+
+Running 5 tests using 1 worker
+
+(node:10125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/weather.spec.ts:14:1 › météo, prévisions, recherche et carte sans dépendance réseau (2.7s)
+  ✓  2 tests/e2e/weather.spec.ts:31:1 › timeout fournisseur affiché, puis nouvelle tentative réussie (512ms)
+  ✓  3 tests/e2e/weather.spec.ts:41:1 › ville inconnue et champ vide (433ms)
+  ✓  4 tests/e2e/weather.spec.ts:49:1 › une réponse ancienne ne remplace pas une nouvelle recherche (1.4s)
+  ✓  5 tests/e2e/weather.spec.ts:63:1 › menu mobile et absence de débordement de 320 à 1440 px (482ms)
+
+  5 passed (6.7s)
