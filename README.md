@@ -338,7 +338,7 @@ Les captures et traces temporaires sont ignorées par Git. Les [preuves textuell
 
 ## Publication GitHub
 
-Le dépôt Git existant et son historique sont conservés. Le nom demandé pour le dépôt public est **aeris**. Le résultat de publication et son lien sont consignés dans [SUIVI.md](SUIVI.md).
+Le dépôt public est [Rega-San/aeris](https://github.com/Rega-San/aeris). Les sources, Dockerfiles et documents ont été publiés sur `main` ; l’historique Git existant est conservé. La visibilité publique et l’accès sans authentification ont été vérifiés. Détails dans [SUIVI.md](SUIVI.md).
 
 Après relecture des changements et vérification des fichiers ignorés :
 

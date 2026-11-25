@@ -11,7 +11,7 @@
 | Docker Compose | Validé | Trois services sains après build, démarrage et redémarrage. |
 | Communication entre services | Validé | Navigateur → Nginx → Express → PostgreSQL et Open-Meteo vérifiés. |
 | Documentation | Validé | README pédagogique, suivi, audit et matrice mis à jour. |
-| GitHub | À vérifier | Audit local et historique réussi ; publication en cours. |
+| GitHub | Validé | [Rega-San/aeris](https://github.com/Rega-San/aeris), public, branche main publiée ; Compose téléchargé sans authentification. |
 
 L’application reste démarrée sur http://localhost:8080. Le conteneur temporaire du TP1 a été arrêté. Docker Desktop doit rester actif pour utiliser Compose.
 
@@ -71,9 +71,13 @@ Toutes les commandes partent de la racine. Pour les commandes `AERIS_URL=…`, l
 
 Les commandes SQL et d’inspection complètes se trouvent dans le [README](README.md). La persistance a été testée par redémarrage, pas par suppression du volume. Les tests sont une observation datée : Open-Meteo et OpenStreetMap peuvent être indisponibles ultérieurement.
 
+## Publication vérifiée
+
+`gh repo create Rega-San/aeris --public --source=. --remote=origin --push` a créé le dépôt et envoyé main (réussi). `gh repo view Rega-San/aeris --json url,visibility,defaultBranchRef` confirme PUBLIC et main (réussi). `curl --fail https://raw.githubusercontent.com/Rega-San/aeris/main/compose.yaml` reçoit le fichier sans authentification (réussi). Commit applicatif : `fb0b871`, suivi d’un commit documentaire. Historique conservé, aucun push forcé. Le contrôle `git diff --cached --check` a d’abord détecté des espaces dans les preuves historiques ; il réussit après nettoyage.
+
 ## 5. Travail restant
 
-- Terminer et vérifier la publication publique ; mettre à jour cette ligne après le push.
+- Aucun travail obligatoire restant pour les exigences fournies ; dépôt publié et vérifié.
 - Facultatif : conserver des captures de la démonstration pour le rendu du cours, selon [SCREENSHOTS.md](docs/SCREENSHOTS.md).
 - Aucun ajout de CRUD ou de service nécessaire aux exigences fournies.
 
