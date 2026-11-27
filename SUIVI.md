@@ -1,4 +1,14 @@
-# Suivi AERIS — 25 novembre 2026
+# Suivi AERIS
+
+## Exercice CI — 27 novembre 2026
+
+- Analyse : frontend dans `frontend/`, Next.js 16.4.6, React 19.3.0, npm et lockfile dédié ; `next build` produit `frontend/out/` grâce à `output: "export"`. Aucun workflow préexistant. Dépôt `https://github.com/Rega-San/aeris.git`, branche `main`, état initial propre.
+- Ajout de [.github/workflows/ci.yml](.github/workflows/ci.yml) : push toutes branches, Ubuntu, Node 22, installation reproductible, build, contrôle HTML/JS/CSS et artefact `aeris-frontend-build` conservé 14 jours.
+- Ajout de la section pédagogique CI au [README](README.md). Aucun changement aux sources, dépendances, Dockerfiles, Compose ou base de données.
+- Vérifications locales : YAML analysé avec Ruby/Psych, déclencheur et chemin d’artefact contrôlés ; aucun diagnostic éditeur ; build Next.js réussi avec Node 25.8.1 local (la CI utilisera Node 22) ; `docker compose config --quiet` réussi. Pas de nouveau test fonctionnel Docker complet pour cette modification documentaire et CI.
+- Publication et résultat distant : à compléter après push et consultation de l’exécution. Les validations historiques ci-dessous concernent le TP Docker du 25 novembre, pas cette nouvelle CI.
+
+## Historique — 25 novembre 2026
 
 ## 1. État actuel
 

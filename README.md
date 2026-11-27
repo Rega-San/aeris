@@ -383,6 +383,48 @@ Ne pas versionner `.env`, `.local/`, les dépendances, builds ou traces Playwrig
 
 Le navigateur utilise `localhost:8080`, jamais `backend:4000` : ce nom n’est résolu que dans le réseau Docker. En développement local uniquement, l’API écoute directement sur `localhost:4000`.
 
+## Intégration continue — GitHub Actions
+
+Une **pipeline CI** (intégration continue) est une suite de vérifications automatiques appliquées au code envoyé sur le dépôt. **GitHub Actions** exécute cette suite sur une machine fournie par GitHub. Notre recette est le [workflow CI](.github/workflows/ci.yml), placé à la racine du dépôt dans `.github/workflows/`.
+
+À chaque `git push` sur **n’importe quelle branche**, GitHub lance le job `frontend-build` sur un runner Ubuntu. Les tags seuls ne déclenchent pas ce workflow. Les étapes sont :
+
+1. Récupérer le code du commit avec `actions/checkout`.
+2. Installer Node.js 22 avec `actions/setup-node`, comme dans le Dockerfile frontend. Le cache npm utilise le lockfile du frontend.
+3. Exécuter `npm ci` dans `frontend/` pour installer les versions verrouillées.
+4. Exécuter `npm run build` dans ce même dossier : Next.js 16.4.6 utilise la configuration existante `output: "export"`.
+5. Vérifier `out/index.html`, `out/404.html` et la présence de JavaScript et de CSS dans `out/_next/static/`. Une absence fait échouer le job.
+6. Publier **`aeris-frontend-build`** avec `actions/upload-artifact`, en prenant le contenu de `frontend/out/`. L’artefact est conservé **14 jours** ; une nouvelle exécution possède son propre artefact.
+
+Un **artefact** est un résultat de fabrication conservé après l’exécution : ici les fichiers HTML, CSS, JavaScript et ressources statiques, téléchargeables en ZIP. Les caches `.next/` et le fichier généré `frontend/frontend/.next/build/package.json` ne définissent pas le projet à compiler. Le vrai manifeste est [frontend/package.json](frontend/package.json), accompagné de son lockfile npm. Le package racine orchestre aussi le backend : la CI cible donc explicitement le frontend.
+
+Cette CI n’effectue pas de déploiement et ne démarre ni PostgreSQL ni Express. Le build n’en a pas besoin. `NEXT_PUBLIC_API_BASE_URL` est vide comme dans Docker : les appels `/api/` restent relatifs à l’origine. L’artefact seul ne fournit pas l’API météo ou l’historique : pour utiliser toute l’application, conserver le proxy Nginx, le backend et PostgreSQL existants. Aucun secret n’est requis par ce workflow ; ses permissions sur le code sont limitées à la lecture.
+
+### Retrouver le résultat et télécharger l’artefact
+
+1. Ouvrir [Actions du dépôt AERIS](https://github.com/Rega-San/aeris/actions), puis **CI AERIS**.
+2. Choisir l’exécution correspondant à la branche et au hash du commit envoyé.
+3. Ouvrir **Build et artefact frontend** pour lire les étapes ; vérifier que le build et la publication sont verts.
+4. Revenir au résumé de l’exécution, rubrique **Artifacts**, et cliquer sur **aeris-frontend-build** pour télécharger le ZIP. Se connecter à GitHub si nécessaire.
+5. Décompresser : `index.html`, `404.html` et `_next/static/` doivent être présents. Il s’agit d’un site à servir en HTTP, pas d’une application complète à ouvrir simplement en `file://`.
+
+Si aucune exécution n’apparaît, vérifier que le commit envoyé contient bien `.github/workflows/ci.yml`, que `on.push` est défini et que GitHub Actions est autorisé dans **Settings → Actions → General**. Si le job échoue, ouvrir **la première étape rouge** et lire son message : installation, compilation, fichiers manquants ou publication. Corriger, committer puis pousser de nouveau. Si l’artefact a expiré, relancer le job depuis **Re-run jobs** ou pousser un nouveau commit.
+
+### Les mots à retenir
+
+| Notion | Explication simple |
+| --- | --- |
+| Git | Outil local qui conserve les versions du code sous forme de commits. |
+| GitHub | Service qui héberge le dépôt Git et facilite le travail partagé. |
+| GitHub Actions | Service GitHub qui exécute les automatisations. |
+| Workflow | Fichier YAML décrivant quand lancer les tâches et quelles étapes exécuter. |
+| Pipeline CI | Suite automatique qui vérifie que le code envoyé peut être construit. |
+| Job | Groupe d’étapes exécutées sur une même machine ; ici `frontend-build`. |
+| Runner | Machine qui exécute le job ; ici Ubuntu chez GitHub. |
+| Build | Transformation du code source en fichiers utilisables par le navigateur. |
+| Artefact | Résultat du build conservé et téléchargeable après le job. |
+| Push | Envoi des commits locaux vers le dépôt distant. |
+
 ## Sources techniques
 
 - [Export statique Next.js](https://nextjs.org/docs/app/guides/static-exports) — configuration vérifiée aussi dans la documentation livrée avec Next.js installé.

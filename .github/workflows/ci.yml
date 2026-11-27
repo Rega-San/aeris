@@ -1,0 +1,54 @@
+name: CI AERIS
+
+on:
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-build:
+    name: Build et artefact frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      NEXT_PUBLIC_API_BASE_URL: ''
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Construire le frontend statique
+        run: npm run build
+
+      - name: Vérifier les fichiers générés
+        run: |
+          test -s out/index.html
+          test -s out/404.html
+          test -d out/_next/static
+          test -n "$(find out/_next/static -type f -name '*.js' -print -quit)"
+          test -n "$(find out/_next/static -type f -name '*.css' -print -quit)"
+
+      - name: Publier l’artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aeris-frontend-build
+          # Les actions uses résolvent ce chemin depuis la racine du dépôt.
+          path: frontend/out/
+          if-no-files-found: error
+          retention-days: 14
