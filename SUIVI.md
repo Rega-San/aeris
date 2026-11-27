@@ -6,7 +6,9 @@
 - Ajout de [.github/workflows/ci.yml](.github/workflows/ci.yml) : push toutes branches, Ubuntu, Node 22, installation reproductible, build, contrôle HTML/JS/CSS et artefact `aeris-frontend-build` conservé 14 jours.
 - Ajout de la section pédagogique CI au [README](README.md). Aucun changement aux sources, dépendances, Dockerfiles, Compose ou base de données.
 - Vérifications locales : YAML analysé avec Ruby/Psych, déclencheur et chemin d’artefact contrôlés ; aucun diagnostic éditeur ; build Next.js réussi avec Node 25.8.1 local (la CI utilisera Node 22) ; `docker compose config --quiet` réussi. Pas de nouveau test fonctionnel Docker complet pour cette modification documentaire et CI.
-- Publication et résultat distant : à compléter après push et consultation de l’exécution. Les validations historiques ci-dessous concernent le TP Docker du 25 novembre, pas cette nouvelle CI.
+- Publication : commit `9c710e36f248de6e2a35f0c4112c9c7a613ae688` poussé sur `origin/main`. [Exécution 45980429614](https://github.com/Rega-San/aeris/actions/runs/45980429614) consultée via GitHub CLI : succès, toutes les étapes réussies, y compris `npm ci`, build sous Node 22, vérification et publication.
+- Artefact distant `aeris-frontend-build` : ID `15188742652`, 403 137 octets, non expiré au contrôle, expiration annoncée le 11 décembre 2026 à 10:15 UTC. Téléchargement réellement effectué via `gh run download` dans `.local/ci-artifacts/45980429614/` (ignoré par Git) ; `index.html`, `404.html` et `_next/static/` présents. Les trois étapes du professeur sont validées.
+- Le contrôle local des fichiers HTML/JS/CSS et `git diff --check` ont réussi. Les fichiers Docker/Compose sont identiques à leur version avant intervention. Les validations historiques ci-dessous concernent le TP Docker du 25 novembre, pas cette nouvelle CI.
 
 ## Historique — 25 novembre 2026
 
